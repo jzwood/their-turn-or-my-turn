@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1">
+  <title>Turns</title>
+  <style type="text/css">
+  html, body, div, span, label {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    font: inherit;
+    vertical-align: baseline;
+  }
+
+  body {
+    line-height: 1;
+  }
+
+  html, body {
+    width: 100%;
+    height: 100vh;
+  }
+  /* Checkbox Hack */
+
+  input[type=checkbox] {
+    position: absolute;
+    margin: 0;
+    padding: 0;
+    top: -9999px;
+    left: -9999px;
+  }
+
+  label {
+    -webkit-tap-highlight-color: transparent;
+    display: block;
+    cursor: pointer;
+  }
+  /* Default State */
+
+  div.headline {
+    position: absolute;
+    top: 5%;
+    background: transparent;
+    width: 100%;
+    height: 100px;
+    line-height: 100px;
+    font-family: "Trebuchet MS", Helvetica, sans-serif;
+    font-size: 90px;
+    color: black;
+    text-align: center;
+    z-index: -1;
+  }
+
+  div.name:after {
+    content: "EMILY'S";
+    color: #C2DAF5;
+  }
+  /* Toggled State */
+
+  input[type=checkbox]:checked~div.headline>div.name:after {
+    content: "JAKE'S";
+    color: #AEFCB4;
+  }
+
+  .click {
+    text-align: center;
+    height: 320px;
+    width: 100%;
+    background: transparent;
+  }
+
+  .notes, .date,.noclickzone {
+    margin: 0 auto;
+    width: 320px;
+    padding: 0;
+    z-index: 1000;
+    font-size: 20px;
+    font-family: 'Helvetica Neue', 'Helvetica', 'Arial';
+  }
+
+  .noclickzone{
+    width: 100%;
+    height: 36px;
+  }
+
+  .date {
+    padding-top: 10px;
+    color: #999999;
+  }
+
+  input {
+    outline: none;
+    border: none;
+    display: block;
+    position: relative;
+  }
+
+  input:focus {
+    outline: none;
+  }
+
+  textarea {
+    resize: none;
+  }
+  </style>
+</head>
+
+<body>
+  <label for="toggle-1"><div class="click"></div></label>  
+  <input type="checkbox" id="toggle-1" onchange="saveTurn()"/>
+  <div class="headline">
+    <div>IT'S</div>
+    <div class="name">&nbsp;</div>
+    <div>TURN</div>
+  </div>
+  <input class="noclickzone" readonly="readonly" />
+  <input class="notes" id="notes" oninput="saveNotes()" spellcheck="false" maxlength="28" placeholder="Put notes here" />
+  <input class="date" id="date" oninput="saveDate()" spellcheck="false" value="updated on ..." />
+  <script type="text/javascript">
+  //target elements
+  var checkbox = document.getElementById('toggle-1'),
+  dateDiv = document.getElementById('date'),
+  noteDiv = document.getElementById('notes')
+
+  //load cached values
+  checkbox.checked = String(localStorage.getItem('turn-app-checkbox')) === 'true'
+  dateDiv.value = localStorage.getItem('turn-app-date') || 'updated on ...'
+  noteDiv.value = localStorage.getItem('turn-app-notes') || ''
+
+  //define current date
+  var d = new Date(),
+  date = String(d).split(' ').slice(0, 3).join(' ')
+
+  function saveTurn() {
+    localStorage.setItem('turn-app-checkbox', checkbox.checked)
+  }
+
+  function saveNotes() {
+    dateDiv.value = date
+    localStorage.setItem('turn-app-date', date)
+    localStorage.setItem('turn-app-notes', noteDiv.value)
+  }
+
+  function saveDate() {
+    localStorage.setItem('turn-app-date', dateDiv.value)
+  }
+
+  </script>
+
+</body>
+
+</html>
